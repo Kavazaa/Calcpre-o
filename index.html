@@ -19,7 +19,8 @@
             background-color: #f3f4f6;
             cursor: not-allowed;
         }
-        .marketplace-item:has(input[type=checkbox]:checked) {
+        .marketplace-item:has(input[type=checkbox]:checked),
+        .option-container:has(input[type=radio]:checked) {
             background-color: #f0fdfa; /* bg-teal-50 */
             border-color: #14b8a6; /* border-teal-500 */
         }
@@ -36,29 +37,42 @@
 
             <form id="pricing-calculator" class="space-y-8">
 
-                <!-- Seção: Reuniões Mensais -->
+                <!-- Seção: Reuniões Mensais (LÓGICA ATUALIZADA) -->
                 <section class="category">
                     <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Reuniões Mensais</h3>
                     <div class="space-y-3">
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="reunioes" value="2500" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">4 Reuniões</span>
                             <span class="ml-auto font-semibold text-teal-600">R$2.500</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="reunioes" value="4000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">8 Reuniões</span>
                             <span class="ml-auto font-semibold text-teal-600">R$4.000</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
-                            <input type="radio" name="reunioes" value="6000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
-                            <span class="ml-4 text-gray-700">16 Reuniões</span>
-                            <span class="ml-auto font-semibold text-teal-600">R$6.000</span>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
+                            <input type="radio" name="reunioes" value="4980" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">12 Reuniões</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$4.980</span>
                         </label>
+                        <div class="border rounded-lg option-container" id="custom-reunioes-container">
+                            <label class="flex items-center p-4 cursor-pointer hover:bg-gray-50 rounded-lg">
+                                <input type="radio" name="reunioes" value="custom" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                                <span class="ml-4 text-gray-700">Personalizado</span>
+                            </label>
+                            <div id="custom-reunioes-wrapper" class="p-4 pt-0 hidden">
+                                <div class="flex items-center pl-8">
+                                     <label for="custom-reunioes-valor" class="text-gray-600 font-medium text-sm">Quantidade:</label>
+                                     <input type="number" id="custom-reunioes-valor" min="1" value="1" class="ml-auto w-24 p-2 border rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
+                                     <span class="ml-4 font-semibold text-gray-500 text-sm">x R$375</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Seção: Contas Gerenciadas (LÓGICA ATUALIZADA) -->
+                <!-- Seção: Contas Gerenciadas -->
                 <section class="category">
                     <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Contas Gerenciadas</h3>
                     <div id="marketplaces-list" class="space-y-3">
@@ -75,22 +89,22 @@
                 <section class="category">
                     <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Anúncios Ativos</h3>
                     <div class="space-y-3">
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="anuncios" value="1500" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Até 1.000</span>
                             <span class="ml-auto font-semibold text-teal-600">R$1.500</span>
                         </label>
-                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="anuncios" value="3000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">1.001 a 2.000</span>
                             <span class="ml-auto font-semibold text-teal-600">R$3.000</span>
                         </label>
-                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="anuncios" value="5000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">2.001 a 5.000</span>
                             <span class="ml-auto font-semibold text-teal-600">R$5.000</span>
                         </label>
-                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="anuncios" value="7500" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Acima de 5.000</span>
                             <span class="ml-auto font-semibold text-teal-600">R$7.500</span>
@@ -102,24 +116,28 @@
                 <section class="category">
                     <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Plataformas de Integração</h3>
                     <div class="space-y-3">
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="plataforma" value="0" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Bling, Tiny, Omie, etc.</span>
                             <span class="ml-auto font-semibold text-teal-600">Sem custo</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="plataforma" value="2000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Precode, VTEX, Linx</span>
                             <span class="ml-auto font-semibold text-teal-600">R$2.000</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
-                            <input type="radio" name="plataforma" value="custom" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
-                            <span class="ml-4 text-gray-700">SAP, ERP Próprio</span>
-                            <span class="ml-auto font-semibold text-teal-600">Valor personalizado</span>
-                        </label>
-                        <div id="custom-plataforma-wrapper" class="items-center pt-2 pl-4 hidden">
-                            <label for="custom-plataforma-valor" class="text-gray-600 font-medium">Valor da Integração:</label>
-                            <input type="text" id="custom-plataforma-valor" placeholder="Ex: 5000" class="ml-2 w-32 p-2 border rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                        <div class="border rounded-lg option-container" id="custom-plataforma-container">
+                            <label class="flex items-center p-4 cursor-pointer hover:bg-gray-50 rounded-lg">
+                                <input type="radio" name="plataforma" value="custom" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                                <span class="ml-4 text-gray-700">SAP, ERP Próprio</span>
+                                <span class="ml-auto font-semibold text-teal-600">Personalizado</span>
+                            </label>
+                            <div id="custom-plataforma-wrapper" class="p-4 pt-0 hidden">
+                                <div class="flex items-center pl-8">
+                                    <label for="custom-plataforma-valor" class="text-gray-600 font-medium text-sm">Valor:</label>
+                                    <input type="text" id="custom-plataforma-valor" placeholder="Ex: 5000" class="ml-auto w-32 p-2 border rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -128,27 +146,27 @@
                 <section class="category">
                     <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Reuniões In Company (Opcional)</h3>
                     <div class="space-y-3">
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="incompany" value="0" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Nenhuma</span>
                             <span class="ml-auto font-semibold text-teal-600">R$0</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="incompany" value="3000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Única</span>
                             <span class="ml-auto font-semibold text-teal-600">R$3.000</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="incompany" value="4000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Semestral (2 visitas)</span>
                             <span class="ml-auto font-semibold text-teal-600">R$4.000</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="incompany" value="6000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Trimestral (4 visitas)</span>
                             <span class="ml-auto font-semibold text-teal-600">R$6.000</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="incompany" value="12000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Mensal (12 visitas)</span>
                             <span class="ml-auto font-semibold text-teal-600">R$12.000</span>
@@ -160,27 +178,27 @@
                 <section class="category">
                     <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Treinamento Executivo (Opcional)</h3>
                     <div class="space-y-3">
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="treinamento" value="0" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Nenhum</span>
                             <span class="ml-auto font-semibold text-teal-600">R$0</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="treinamento" value="500" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">5 acessos</span>
                             <span class="ml-auto font-semibold text-teal-600">R$500</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="treinamento" value="800" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">10 acessos</span>
                             <span class="ml-auto font-semibold text-teal-600">R$800</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="treinamento" value="1500" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">20 acessos</span>
                             <span class="ml-auto font-semibold text-teal-600">R$1.500</span>
                         </label>
-                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 option-container">
                             <input type="radio" name="treinamento" value="5000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
                             <span class="ml-4 text-gray-700">Turma dedicada</span>
                             <span class="ml-auto font-semibold text-teal-600">R$5.000</span>
@@ -226,6 +244,8 @@
                 'netshoes': { name: 'Netshoes', price: 4500 },
                 'kabum': { name: 'Kabum', price: 4500 }
             };
+            
+            let lastSelectedRadios = {};
 
             const formatCurrency = (value) => {
                 if (isNaN(value)) value = 0;
@@ -252,25 +272,46 @@
                 }
             };
             
-            const toggleCustomPlataformaInput = () => {
+            const toggleCustomInputs = () => {
+                // Lógica para Plataforma Personalizada
                 const customPlataformaWrapper = document.getElementById('custom-plataforma-wrapper');
-                const customPlataformaInput = document.getElementById('custom-plataforma-valor');
                 const selectedPlataforma = document.querySelector('input[name="plataforma"]:checked');
                 if (selectedPlataforma && selectedPlataforma.value === 'custom') {
                     customPlataformaWrapper.style.display = 'flex';
                 } else {
                     customPlataformaWrapper.style.display = 'none';
-                    customPlataformaInput.value = '';
+                }
+
+                // Lógica para Reuniões Personalizadas
+                const customReunioesWrapper = document.getElementById('custom-reunioes-wrapper');
+                const selectedReunioes = document.querySelector('input[name="reunioes"]:checked');
+                if (selectedReunioes && selectedReunioes.value === 'custom') {
+                    customReunioesWrapper.style.display = 'block';
+                } else {
+                    customReunioesWrapper.style.display = 'none';
                 }
             };
 
             const calculateTotal = () => {
                 const summary = {};
+                toggleCustomInputs();
 
                 // --- CÁLCULO DAS CATEGORIAS ---
-
+                
+                // Reuniões Mensais
                 const reunioesRadio = document.querySelector('input[name="reunioes"]:checked');
-                summary['Reuniões Mensais'] = reunioesRadio ? parseFloat(reunioesRadio.value) : 0;
+                let reunioesValue = 0;
+                if (reunioesRadio) {
+                    if (reunioesRadio.value === 'custom') {
+                        const customInput = document.getElementById('custom-reunioes-valor');
+                        const customQty = parseInt(customInput.value) || 0;
+                        reunioesValue = customQty * 375;
+                    } else {
+                        reunioesValue = parseFloat(reunioesRadio.value);
+                    }
+                }
+                summary['Reuniões Mensais'] = reunioesValue;
+
 
                 const anunciosRadio = document.querySelector('input[name="anuncios"]:checked');
                 summary['Anúncios Ativos'] = anunciosRadio ? parseFloat(anunciosRadio.value) : 0;
@@ -282,17 +323,19 @@
                 summary['Treinamento Executivo'] = treinamentoRadio ? parseFloat(treinamentoRadio.value) : 0;
 
                 const plataformaRadio = document.querySelector('input[name="plataforma"]:checked');
+                let plataformaValue = 0;
                 if (plataformaRadio) {
                     if (plataformaRadio.value === 'custom') {
                         const customPlataformaInput = document.getElementById('custom-plataforma-valor');
                         const customValueString = customPlataformaInput.value.replace(/[^0-9,.]/g, '').replace(',', '.');
-                        summary['Plataforma de Integração'] = parseFloat(customValueString) || 0;
+                        plataformaValue = parseFloat(customValueString) || 0;
                     } else {
-                        summary['Plataforma de Integração'] = parseFloat(plataformaRadio.value) || 0;
+                        plataformaValue = parseFloat(plataformaRadio.value) || 0;
                     }
                 }
+                summary['Plataforma de Integração'] = plataformaValue;
 
-                // --- LÓGICA DE CONTAS GERENCIADAS (CORRIGIDA) ---
+                // --- LÓGICA DE CONTAS GERENCIADAS ---
                 const allAccountsPrices = [];
                 const marketplaceCheckboxes = document.querySelectorAll('input[name="marketplace"]:checked');
                 marketplaceCheckboxes.forEach(checkbox => {
@@ -307,11 +350,11 @@
                 
                 let managedAccountsSubtotal = 0;
                 allAccountsPrices.forEach((price, index) => {
-                    if (index < 3) { // Contas 1, 2, 3
+                    if (index < 3) {
                         managedAccountsSubtotal += price;
-                    } else if (index < 6) { // Contas 4, 5, 6
+                    } else if (index < 6) {
                         managedAccountsSubtotal += price * 0.85; // 15% de desconto
-                    } else { // A partir da conta 7
+                    } else {
                         managedAccountsSubtotal += price * 0.70; // 30% de desconto
                     }
                 });
@@ -323,8 +366,8 @@
 
                 for (const key in summary) {
                     const value = summary[key];
-                    grandTotal += value;
                     if (value > 0) {
+                        grandTotal += value;
                         const itemHTML = `
                             <div class="flex justify-between">
                                 <span>${key}:</span>
@@ -353,13 +396,30 @@
             
             // --- INICIALIZAÇÃO E LISTENERS ---
             populateMarketplaces();
-            toggleCustomPlataformaInput();
-            calculateTotal();
+            
+            // Define o estado inicial dos radios selecionados
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                lastSelectedRadios[radio.name] = radio;
+            });
+            
+            calculateTotal(); // Calcula o total na carga inicial
 
-            calculatorForm.addEventListener('change', (event) => {
-                 if (event.target.name === 'plataforma') {
-                    toggleCustomPlataformaInput();
+            // Listener para desmarcar radios
+            calculatorForm.addEventListener('click', (e) => {
+                if (e.target.type === 'radio') {
+                    const name = e.target.name;
+                    if (lastSelectedRadios[name] === e.target) {
+                        e.target.checked = false;
+                        lastSelectedRadios[name] = null;
+                        calculateTotal();
+                    } else {
+                        lastSelectedRadios[name] = e.target;
+                    }
                 }
+            });
+
+            // Listener principal para mudanças e inputs
+            calculatorForm.addEventListener('change', (event) => {
                 handleMarketplaceSelection(event);
                 calculateTotal();
             });
