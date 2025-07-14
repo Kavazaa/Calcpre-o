@@ -65,9 +65,9 @@
                         <!-- Marketplaces serão inseridos aqui pelo JS -->
                     </div>
                     <div class="p-3 mt-4 bg-gray-50 rounded-lg text-sm text-gray-600 space-y-1">
-                        <p><span class="font-semibold">Até 3 contas:</span> Valor normal</p>
-                        <p><span class="font-semibold">4 a 6 contas:</span> <span class="font-bold text-teal-600">15% de desconto</span> no subtotal das contas</p>
-                        <p><span class="font-semibold">7 ou mais contas:</span> <span class="font-bold text-teal-600">30% de desconto</span> no subtotal das contas</p>
+                        <p><span class="font-semibold">Contas 1 a 3:</span> Valor normal</p>
+                        <p><span class="font-semibold">Contas 4 a 6:</span> <span class="font-bold text-teal-600">15% de desconto</span> (aplicado a partir da 4ª conta)</p>
+                        <p><span class="font-semibold">A partir da 7ª conta:</span> <span class="font-bold text-teal-600">30% de desconto</span> (aplicado a partir da 7ª conta)</p>
                     </div>
                 </section>
 
@@ -188,6 +188,14 @@
                     </div>
                 </section>
 
+                <!-- Seção: Resumo do Orçamento -->
+                <section id="summary" class="pt-8 border-t mt-8">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Resumo do Orçamento</h3>
+                    <div class="space-y-2 text-gray-600" id="summary-items">
+                        <!-- Itens do resumo serão inseridos aqui -->
+                    </div>
+                </section>
+
             </form>
         </div>
     </div>
@@ -204,10 +212,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const calculatorForm = document.getElementById('pricing-calculator');
             const totalPriceElement = document.getElementById('total-price');
-            const customPlataformaWrapper = document.getElementById('custom-plataforma-wrapper');
-            const customPlataformaInput = document.getElementById('custom-plataforma-valor');
-            const plataformaRadios = document.querySelectorAll('input[name="plataforma"]');
             const marketplacesListDiv = document.getElementById('marketplaces-list');
+            const summaryItemsDiv = document.getElementById('summary-items');
 
             const marketplaces = {
                 'mercado-livre': { name: 'Mercado Livre', price: 2500 },
@@ -226,7 +232,6 @@
                 return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
             };
 
-            // Função para popular a lista de marketplaces
             const populateMarketplaces = () => {
                 for (const id in marketplaces) {
                     const marketplace = marketplaces[id];
@@ -248,6 +253,8 @@
             };
             
             const toggleCustomPlataformaInput = () => {
+                const customPlataformaWrapper = document.getElementById('custom-plataforma-wrapper');
+                const customPlataformaInput = document.getElementById('custom-plataforma-valor');
                 const selectedPlataforma = document.querySelector('input[name="plataforma"]:checked');
                 if (selectedPlataforma && selectedPlataforma.value === 'custom') {
                     customPlataformaWrapper.style.display = 'flex';
@@ -258,62 +265,79 @@
             };
 
             const calculateTotal = () => {
-                let total = 0;
+                const summary = {};
 
-                // --- CATEGORIAS COM VALOR FIXO ---
+                // --- CÁLCULO DAS CATEGORIAS ---
+
                 const reunioesRadio = document.querySelector('input[name="reunioes"]:checked');
-                if (reunioesRadio) total += parseFloat(reunioesRadio.value);
+                summary['Reuniões Mensais'] = reunioesRadio ? parseFloat(reunioesRadio.value) : 0;
 
                 const anunciosRadio = document.querySelector('input[name="anuncios"]:checked');
-                if (anunciosRadio) total += parseFloat(anunciosRadio.value);
+                summary['Anúncios Ativos'] = anunciosRadio ? parseFloat(anunciosRadio.value) : 0;
                 
                 const incompanyRadio = document.querySelector('input[name="incompany"]:checked');
-                if (incompanyRadio) total += parseFloat(incompanyRadio.value);
+                summary['Reuniões In Company'] = incompanyRadio ? parseFloat(incompanyRadio.value) : 0;
                 
                 const treinamentoRadio = document.querySelector('input[name="treinamento"]:checked');
-                if (treinamentoRadio) total += parseFloat(treinamentoRadio.value);
+                summary['Treinamento Executivo'] = treinamentoRadio ? parseFloat(treinamentoRadio.value) : 0;
 
-                // --- LÓGICA DE CONTAS GERENCIADAS ---
-                let managedAccountsSubtotal = 0;
-                let totalAccounts = 0;
+                const plataformaRadio = document.querySelector('input[name="plataforma"]:checked');
+                if (plataformaRadio) {
+                    if (plataformaRadio.value === 'custom') {
+                        const customPlataformaInput = document.getElementById('custom-plataforma-valor');
+                        const customValueString = customPlataformaInput.value.replace(/[^0-9,.]/g, '').replace(',', '.');
+                        summary['Plataforma de Integração'] = parseFloat(customValueString) || 0;
+                    } else {
+                        summary['Plataforma de Integração'] = parseFloat(plataformaRadio.value) || 0;
+                    }
+                }
+
+                // --- LÓGICA DE CONTAS GERENCIADAS (CORRIGIDA) ---
+                const allAccountsPrices = [];
                 const marketplaceCheckboxes = document.querySelectorAll('input[name="marketplace"]:checked');
-                
                 marketplaceCheckboxes.forEach(checkbox => {
                     const marketplaceId = checkbox.id;
                     const pricePerAccount = parseFloat(checkbox.value);
                     const qtyInput = document.getElementById(`qty-${marketplaceId}`);
                     const quantity = parseInt(qtyInput.value) || 0;
-
-                    if (quantity > 0) {
-                        totalAccounts += quantity;
-                        managedAccountsSubtotal += quantity * pricePerAccount;
+                    for (let i = 0; i < quantity; i++) {
+                        allAccountsPrices.push(pricePerAccount);
                     }
                 });
+                
+                let managedAccountsSubtotal = 0;
+                allAccountsPrices.forEach((price, index) => {
+                    if (index < 3) { // Contas 1, 2, 3
+                        managedAccountsSubtotal += price;
+                    } else if (index < 6) { // Contas 4, 5, 6
+                        managedAccountsSubtotal += price * 0.85; // 15% de desconto
+                    } else { // A partir da conta 7
+                        managedAccountsSubtotal += price * 0.70; // 30% de desconto
+                    }
+                });
+                summary['Contas Gerenciadas'] = managedAccountsSubtotal;
+                
+                // --- ATUALIZAÇÃO DO RESUMO E TOTAL ---
+                summaryItemsDiv.innerHTML = '';
+                let grandTotal = 0;
 
-                // Aplicar desconto
-                if (totalAccounts >= 7) {
-                    managedAccountsSubtotal *= 0.70; // 30% de desconto
-                } else if (totalAccounts >= 4) {
-                    managedAccountsSubtotal *= 0.85; // 15% de desconto
-                }
-                
-                total += managedAccountsSubtotal;
-                
-                // --- CATEGORIA COM VALOR PERSONALIZADO (Plataforma) ---
-                const plataformaRadio = document.querySelector('input[name="plataforma"]:checked');
-                if (plataformaRadio) {
-                    if (plataformaRadio.value === 'custom') {
-                        const customValueString = customPlataformaInput.value.replace(/[^0-9,.]/g, '').replace(',', '.');
-                        total += parseFloat(customValueString) || 0;
-                    } else {
-                        total += parseFloat(plataformaRadio.value) || 0;
+                for (const key in summary) {
+                    const value = summary[key];
+                    grandTotal += value;
+                    if (value > 0) {
+                        const itemHTML = `
+                            <div class="flex justify-between">
+                                <span>${key}:</span>
+                                <span class="font-medium">${formatCurrency(value)}</span>
+                            </div>
+                        `;
+                        summaryItemsDiv.innerHTML += itemHTML;
                     }
                 }
 
-                totalPriceElement.textContent = formatCurrency(total);
+                totalPriceElement.textContent = formatCurrency(grandTotal);
             };
 
-            // Função para gerenciar a visibilidade dos inputs de quantidade
             const handleMarketplaceSelection = (event) => {
                 const checkbox = event.target;
                 if (checkbox.type === 'checkbox' && checkbox.name === 'marketplace') {
@@ -322,9 +346,8 @@
                         qtyWrapper.style.display = 'flex';
                     } else {
                         qtyWrapper.style.display = 'none';
-                        document.getElementById(`qty-${checkbox.id}`).value = '1'; // Reseta para 1
+                        document.getElementById(`qty-${checkbox.id}`).value = '1';
                     }
-                    calculateTotal();
                 }
             };
             
@@ -333,16 +356,14 @@
             toggleCustomPlataformaInput();
             calculateTotal();
 
-            // Adiciona listeners para todos os inputs do formulário
             calculatorForm.addEventListener('change', (event) => {
                  if (event.target.name === 'plataforma') {
                     toggleCustomPlataformaInput();
                 }
-                handleMarketplaceSelection(event); // Gerencia checkboxes de marketplace
+                handleMarketplaceSelection(event);
                 calculateTotal();
             });
             calculatorForm.addEventListener('input', (event) => {
-                // Recalcula para inputs de número e texto
                 if (event.target.type === 'number' || event.target.type === 'text') {
                     calculateTotal();
                 }
