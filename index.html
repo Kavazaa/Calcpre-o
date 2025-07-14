@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precificação - Mamba Enterprise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        label {
+            transition: all 0.2s ease-in-out;
+        }
+        input[type=number]:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+        .marketplace-item:has(input[type=checkbox]:checked) {
+            background-color: #f0fdfa; /* bg-teal-50 */
+            border-color: #14b8a6; /* border-teal-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto max-w-3xl p-4 sm:p-8">
+        <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10">
+            <header class="text-center mb-10">
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">Calculadora de Precificação</h1>
+                <p class="text-gray-600 mt-2">Mamba Enterprise</p>
+            </header>
+
+            <form id="pricing-calculator" class="space-y-8">
+
+                <!-- Seção: Reuniões Mensais -->
+                <section class="category">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Reuniões Mensais</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="reunioes" value="2500" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">4 Reuniões</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$2.500</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="reunioes" value="4000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">8 Reuniões</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$4.000</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="reunioes" value="6000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">16 Reuniões</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$6.000</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Seção: Contas Gerenciadas (LÓGICA ATUALIZADA) -->
+                <section class="category">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Contas Gerenciadas</h3>
+                    <div id="marketplaces-list" class="space-y-3">
+                        <!-- Marketplaces serão inseridos aqui pelo JS -->
+                    </div>
+                    <div class="p-3 mt-4 bg-gray-50 rounded-lg text-sm text-gray-600 space-y-1">
+                        <p><span class="font-semibold">Até 3 contas:</span> Valor normal</p>
+                        <p><span class="font-semibold">4 a 6 contas:</span> <span class="font-bold text-teal-600">15% de desconto</span> no subtotal das contas</p>
+                        <p><span class="font-semibold">7 ou mais contas:</span> <span class="font-bold text-teal-600">30% de desconto</span> no subtotal das contas</p>
+                    </div>
+                </section>
+
+                <!-- Seção: Anúncios Ativos -->
+                <section class="category">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Anúncios Ativos</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="anuncios" value="1500" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Até 1.000</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$1.500</span>
+                        </label>
+                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="anuncios" value="3000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">1.001 a 2.000</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$3.000</span>
+                        </label>
+                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="anuncios" value="5000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">2.001 a 5.000</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$5.000</span>
+                        </label>
+                         <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="anuncios" value="7500" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Acima de 5.000</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$7.500</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Seção: Plataformas de Integração -->
+                <section class="category">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Plataformas de Integração</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="plataforma" value="0" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Bling, Tiny, Omie, etc.</span>
+                            <span class="ml-auto font-semibold text-teal-600">Sem custo</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="plataforma" value="2000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Precode, VTEX, Linx</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$2.000</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="plataforma" value="custom" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">SAP, ERP Próprio</span>
+                            <span class="ml-auto font-semibold text-teal-600">Valor personalizado</span>
+                        </label>
+                        <div id="custom-plataforma-wrapper" class="items-center pt-2 pl-4 hidden">
+                            <label for="custom-plataforma-valor" class="text-gray-600 font-medium">Valor da Integração:</label>
+                            <input type="text" id="custom-plataforma-valor" placeholder="Ex: 5000" class="ml-2 w-32 p-2 border rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção: Reuniões In Company -->
+                <section class="category">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Reuniões In Company (Opcional)</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="incompany" value="0" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Nenhuma</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$0</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="incompany" value="3000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Única</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$3.000</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="incompany" value="4000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Semestral (2 visitas)</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$4.000</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="incompany" value="6000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Trimestral (4 visitas)</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$6.000</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="incompany" value="12000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Mensal (12 visitas)</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$12.000</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Seção: Treinamento Executivo -->
+                <section class="category">
+                    <h3 class="text-lg font-semibold text-gray-700 border-b-2 border-teal-400 pb-2 mb-4">Treinamento Executivo (Opcional)</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="treinamento" value="0" required checked class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Nenhum</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$0</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="treinamento" value="500" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">5 acessos</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$500</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="treinamento" value="800" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">10 acessos</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$800</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="treinamento" value="1500" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">20 acessos</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$1.500</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-teal-50 has-[:checked]:border-teal-500">
+                            <input type="radio" name="treinamento" value="5000" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300">
+                            <span class="ml-4 text-gray-700">Turma dedicada</span>
+                            <span class="ml-auto font-semibold text-teal-600">R$5.000</span>
+                        </label>
+                    </div>
+                </section>
+
+            </form>
+        </div>
+    </div>
+    
+    <!-- Barra de Total Fixa na parte inferior -->
+    <footer class="sticky bottom-0 bg-gray-800 shadow-lg mt-8">
+        <div class="container mx-auto max-w-3xl p-4 flex items-center justify-between">
+            <h2 class="text-xl font-semibold text-white">Valor Total Mensal:</h2>
+            <div id="total-price" class="text-3xl font-bold text-teal-400">R$0,00</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const calculatorForm = document.getElementById('pricing-calculator');
+            const totalPriceElement = document.getElementById('total-price');
+            const customPlataformaWrapper = document.getElementById('custom-plataforma-wrapper');
+            const customPlataformaInput = document.getElementById('custom-plataforma-valor');
+            const plataformaRadios = document.querySelectorAll('input[name="plataforma"]');
+            const marketplacesListDiv = document.getElementById('marketplaces-list');
+
+            const marketplaces = {
+                'mercado-livre': { name: 'Mercado Livre', price: 2500 },
+                'amazon': { name: 'Amazon', price: 3500 },
+                'shopee': { name: 'Shopee', price: 2500 },
+                'magalu': { name: 'Magalu', price: 3500 },
+                'shein': { name: 'Shein', price: 4500 },
+                'tiktok-shop': { name: 'Tiktok Shop', price: 5000 },
+                'madeira-madeira': { name: 'Madeira Madeira', price: 4500 },
+                'netshoes': { name: 'Netshoes', price: 4500 },
+                'kabum': { name: 'Kabum', price: 4500 }
+            };
+
+            const formatCurrency = (value) => {
+                if (isNaN(value)) value = 0;
+                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            };
+
+            // Função para popular a lista de marketplaces
+            const populateMarketplaces = () => {
+                for (const id in marketplaces) {
+                    const marketplace = marketplaces[id];
+                    const itemHTML = `
+                        <div class="p-4 border rounded-lg marketplace-item">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="${id}" name="marketplace" value="${marketplace.price}" class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300 rounded">
+                                <label for="${id}" class="ml-3 flex-grow text-gray-700 cursor-pointer">${marketplace.name}</label>
+                                <span class="font-semibold text-gray-600">${formatCurrency(marketplace.price)}</span>
+                            </div>
+                            <div id="qty-wrapper-${id}" class="items-center mt-3 pl-8 hidden">
+                                <label for="qty-${id}" class="text-gray-600 font-medium text-sm">Quantidade:</label>
+                                <input type="number" id="qty-${id}" name="qty_${id}" min="1" value="1" class="ml-auto w-24 p-2 border rounded-md focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-sm">
+                            </div>
+                        </div>
+                    `;
+                    marketplacesListDiv.innerHTML += itemHTML;
+                }
+            };
+            
+            const toggleCustomPlataformaInput = () => {
+                const selectedPlataforma = document.querySelector('input[name="plataforma"]:checked');
+                if (selectedPlataforma && selectedPlataforma.value === 'custom') {
+                    customPlataformaWrapper.style.display = 'flex';
+                } else {
+                    customPlataformaWrapper.style.display = 'none';
+                    customPlataformaInput.value = '';
+                }
+            };
+
+            const calculateTotal = () => {
+                let total = 0;
+
+                // --- CATEGORIAS COM VALOR FIXO ---
+                const reunioesRadio = document.querySelector('input[name="reunioes"]:checked');
+                if (reunioesRadio) total += parseFloat(reunioesRadio.value);
+
+                const anunciosRadio = document.querySelector('input[name="anuncios"]:checked');
+                if (anunciosRadio) total += parseFloat(anunciosRadio.value);
+                
+                const incompanyRadio = document.querySelector('input[name="incompany"]:checked');
+                if (incompanyRadio) total += parseFloat(incompanyRadio.value);
+                
+                const treinamentoRadio = document.querySelector('input[name="treinamento"]:checked');
+                if (treinamentoRadio) total += parseFloat(treinamentoRadio.value);
+
+                // --- LÓGICA DE CONTAS GERENCIADAS ---
+                let managedAccountsSubtotal = 0;
+                let totalAccounts = 0;
+                const marketplaceCheckboxes = document.querySelectorAll('input[name="marketplace"]:checked');
+                
+                marketplaceCheckboxes.forEach(checkbox => {
+                    const marketplaceId = checkbox.id;
+                    const pricePerAccount = parseFloat(checkbox.value);
+                    const qtyInput = document.getElementById(`qty-${marketplaceId}`);
+                    const quantity = parseInt(qtyInput.value) || 0;
+
+                    if (quantity > 0) {
+                        totalAccounts += quantity;
+                        managedAccountsSubtotal += quantity * pricePerAccount;
+                    }
+                });
+
+                // Aplicar desconto
+                if (totalAccounts >= 7) {
+                    managedAccountsSubtotal *= 0.70; // 30% de desconto
+                } else if (totalAccounts >= 4) {
+                    managedAccountsSubtotal *= 0.85; // 15% de desconto
+                }
+                
+                total += managedAccountsSubtotal;
+                
+                // --- CATEGORIA COM VALOR PERSONALIZADO (Plataforma) ---
+                const plataformaRadio = document.querySelector('input[name="plataforma"]:checked');
+                if (plataformaRadio) {
+                    if (plataformaRadio.value === 'custom') {
+                        const customValueString = customPlataformaInput.value.replace(/[^0-9,.]/g, '').replace(',', '.');
+                        total += parseFloat(customValueString) || 0;
+                    } else {
+                        total += parseFloat(plataformaRadio.value) || 0;
+                    }
+                }
+
+                totalPriceElement.textContent = formatCurrency(total);
+            };
+
+            // Função para gerenciar a visibilidade dos inputs de quantidade
+            const handleMarketplaceSelection = (event) => {
+                const checkbox = event.target;
+                if (checkbox.type === 'checkbox' && checkbox.name === 'marketplace') {
+                    const qtyWrapper = document.getElementById(`qty-wrapper-${checkbox.id}`);
+                    if (checkbox.checked) {
+                        qtyWrapper.style.display = 'flex';
+                    } else {
+                        qtyWrapper.style.display = 'none';
+                        document.getElementById(`qty-${checkbox.id}`).value = '1'; // Reseta para 1
+                    }
+                    calculateTotal();
+                }
+            };
+            
+            // --- INICIALIZAÇÃO E LISTENERS ---
+            populateMarketplaces();
+            toggleCustomPlataformaInput();
+            calculateTotal();
+
+            // Adiciona listeners para todos os inputs do formulário
+            calculatorForm.addEventListener('change', (event) => {
+                 if (event.target.name === 'plataforma') {
+                    toggleCustomPlataformaInput();
+                }
+                handleMarketplaceSelection(event); // Gerencia checkboxes de marketplace
+                calculateTotal();
+            });
+            calculatorForm.addEventListener('input', (event) => {
+                // Recalcula para inputs de número e texto
+                if (event.target.type === 'number' || event.target.type === 'text') {
+                    calculateTotal();
+                }
+            });
+
+        });
+    </script>
+
+</body>
+</html>
